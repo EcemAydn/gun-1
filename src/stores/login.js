@@ -1,20 +1,25 @@
 import { inject, ref } from 'vue';
 import { defineStore } from 'pinia';
-const appAxios = inject("appAxios");
+import axios from 'axios';
 
 export const useLoginStore = defineStore('login', () => {
   const user = ref([]);
 
   const save = () => {
-    appAxios.post('https://taskmanager.ron.digital/api/login',{
-      ...user.value
+    axios.post('https://taskmanager.ron.digital/api/login',{
+      ...user.value,
+      
     }).then(response => {
       console.log(response);
+    })
+    .catch (error => {
+      console.log(error);
     })
   }
 
   function addUser(a){
     user.value.push(a);
+    save()
   }
   return {user, addUser, save}
  

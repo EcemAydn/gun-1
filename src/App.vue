@@ -14,7 +14,6 @@ const userList = ref({
 
 function signIn() {
   userStore.addUser({email:userList.value.email, password:userList.value.password})
-  console.log(userList.value);
 }
 
 </script>
