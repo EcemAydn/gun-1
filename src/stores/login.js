@@ -3,12 +3,16 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 
 export const useLoginStore = defineStore('login', () => {
-  const user = ref([]);
+  const user = ref({
+    email:'',
+    password:''
+  });
 
-  const save = () => {
+  
+
+  function addUser(user){
     axios.post('https://taskmanager.ron.digital/api/login',{
-      ...user.value,
-      
+      ...user
     }).then(response => {
       console.log(response);
     })
@@ -16,12 +20,7 @@ export const useLoginStore = defineStore('login', () => {
       console.log(error);
     })
   }
-
-  function addUser(a){
-    user.value.push(a);
-    save()
-  }
-  return {user, addUser, save}
+  return {user, addUser}
  
 })
 
