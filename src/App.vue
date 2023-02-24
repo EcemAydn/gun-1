@@ -1,9 +1,22 @@
 <script setup>
-import AboutView from '@/views/AboutView.vue';
+import inputComp from '@/components/input.vue';
+import buttonComp from '@/components/button.vue';
+import { useLoginStore } from './stores/login'
+import { ref } from 'vue';
+
+const userStore = useLoginStore();
+
+const userList = ref({
+  email:null,
+  password:null
+});
+
 
 function signIn() {
-  console.log('sign in')
+  userStore.addUser({email:userList.value.email, password:userList.value.password})
+  console.log(userList.value);
 }
+
 </script>
 
 <template>
@@ -15,12 +28,34 @@ function signIn() {
       <p class="text-sm">Or  <a href="#" class="text-blue-600"> start your 14-day free trial</a></p>
     </div>
 
-  
-
-    <div class="bg-white rounded-lg shadow-md p-10 w-1/3">
+    <div class="bg-white rounded-lg shadow-md p-10 w:2/3 md:w-1/3">
       <form @submit.prevent="signIn" class="flex flex-col gap-3">
-       
-          <label for="mail">Email adress</label>
+        <inputComp v-model="userList.email" type="email" label="Email" forId="mail"/>
+        <inputComp v-model="userList.password" type="password" label="Password" forId="pass"/>
+
+        <div class="flex justify-between">
+          <div>
+            <input type="checkbox" id="rem">
+            <label for="rem" class="pl-0 md:pl-1 lg:pl-2">Remember me</label>
+          </div>
+          <a href="#" class="text-blue-600 ">Forgot your password?</a>
+        </div>
+
+        <buttonComp type="submit" buttonName="Sign in" />
+
+        <div class="flex items-center justify-center">
+            <hr aria-hidden="true" class="w-full">
+
+            <p class="text-gray-500 text-xs w-full text-center">Or continue with</p>
+
+            <hr aria-hidden="true" class="w-full" >
+        </div>
+        <div class="w-full grid grid-cols-3 gap-1">
+          <buttonComp buttonName="fb"/>
+          <buttonComp buttonName="tw" />
+          <buttonComp buttonName="git" />
+        </div>
+          <!-- <label for="mail">Email adress</label>
           <input id="mail" type="mail" class="border p-1 rounded-md outline-none" required>
 
           <label for="pass">Password</label>
@@ -49,7 +84,7 @@ function signIn() {
             <button class="border rounded-md p-2 px-14">fb</button>
             <button class="border rounded-md p-2 px-14">tw</button>
             <button class="border rounded-md p-2 px-14">git</button>
-          </div>
+          </div> -->
       </form>
     </div>
   </div>
