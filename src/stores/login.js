@@ -24,7 +24,6 @@ export const useLoginStore = defineStore('login', () => {
         console.log(response);
         clearTimeout(timeout);
         if(!deneme) {
-          console.log('fetch good! ', response);
           resolve(alert('basarili'));
         }
       })
