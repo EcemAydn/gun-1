@@ -1,6 +1,6 @@
 <template>
     <label 
-      for="forId"
+      :for="forId"
       >{{ label }}</label>
     <input
       :id="forId"
@@ -14,6 +14,9 @@
   </template>
   
   <script setup>
+  import { ref } from 'vue';
+  const forId = ref(new Date().getTime());
+
   defineProps({
     modelValue: {
       type: [String, Number],
@@ -25,9 +28,6 @@
     label: {
       type: String,
     },
-    forId: {
-      type: String
-    }
   });
   defineEmits(['update:modelValue'])
   </script>

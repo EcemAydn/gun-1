@@ -49,8 +49,8 @@ userStore.getUser();
 
     <div class="bg-white rounded-lg shadow-md p-10 w:2/3 md:w-1/3">
       <form @submit.prevent="signIn" class="flex flex-col gap-3">
-        <inputComp v-model="userList.email" type="email" label="Email" forId="mail"/>
-        <inputComp v-model="userList.password" type="password" label="Password" forId="pass"/>
+        <inputComp v-model="userList.email" autocomplete="email" type="email" label="Email"/>
+        <inputComp v-model="userList.password" autocomplete="current-password" type="password" label="Password"/>
 
         <div class="flex justify-between">
           <div>
