@@ -11,7 +11,7 @@ const nameDesc = ref({
     name : '',
     description : ''
 });
-// const router = useRouter()
+const router = useRouter()
 const route = useRoute()
 
 onMounted(async() => {
@@ -21,7 +21,7 @@ onMounted(async() => {
     } else {
         console.log(route.params);
         console.log('aa');
-        // router.push({ name : 'title'})
+        router.push({ name : 'title'})
     }
 })
 

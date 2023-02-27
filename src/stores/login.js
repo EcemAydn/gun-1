@@ -25,21 +25,15 @@ export const useLoginStore = defineStore('login', () => {
       newInstance.put(`/titles/${uv.id}`, {
       id:uv.id, name: uv.name, description: uv.description
       }).then(response => {
-        console.log(response.data.titles);
-        deniyorum()
-        // const findIndex = titles.value.findIndex((title)=> title.id === uv);
-        // titles.value.splice(findIndex, 1, {name: titles.name.value, description: titles.description.value})
+        const findIndex = titles.value.findIndex((title)=> title.id === uv);
+        titles.value.splice(findIndex, 1, response.data.title)
         resolve('oldu');
       }).catch(()=>{
         reject('olmadi');
       })
     })
   }
-  function deniyorum(editTitle){
-    const findIndex = titles.value.findIndex((title)=> title.id === uv);
-    titles.value.splice(findIndex, 1, editTitle)
-  }
-
+ 
   function createTitle(uv){
       return new Promise((resolve, reject) => {
         newInstance.post('/titles',{
