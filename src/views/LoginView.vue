@@ -47,7 +47,7 @@ userStore.getUser();
       <p class="text-sm">Or  <a href="#" class="text-blue-600"> start your 14-day free trial</a></p>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-10 w:2/3 md:w-1/3">
+    <div class="bg-white rounded-lg shadow-md p-10 w-2/3 md:w-1/3">
       <form @submit.prevent="signIn" class="flex flex-col gap-3">
         <inputComp v-model="userList.email" autocomplete="email" type="email" label="Email"/>
         <inputComp v-model="userList.password" autocomplete="current-password" type="password" label="Password"/>
