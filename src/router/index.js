@@ -14,12 +14,7 @@ const router = createRouter({
       component: () => import('../views/TitleView.vue')
     },
     {
-        path: '/titles',
-        name: 'title',
-        component: () => import('../views/TitleView.vue')
-    },
-    {
-        path: '/update',
+        path: '/update/:id',
         name: 'update',
         component: () => import('../views/UpdateView.vue')
     },
