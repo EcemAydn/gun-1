@@ -7,7 +7,6 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: () => import('../views/LoginView.vue')
-
     },
     {
       path: '/titles',
@@ -18,8 +17,27 @@ const router = createRouter({
         path: '/titles',
         name: 'title',
         component: () => import('../views/TitleView.vue')
-      }
+    },
+    {
+        path: '/update',
+        name: 'update',
+        component: () => import('../views/UpdateView.vue')
+    },
+    {
+        path: '/create',
+        name: 'create',
+        component: () => import('../views/CreateView.vue')
+    },
   ]
+});
+
+const token = localStorage.getItem('token');
+router.beforeEach((to, from, next) => {
+   if(!token && to.name !== 'login') {
+    next({ name: 'login' });
+   }
+
+   next();
 })
 
 export default router
