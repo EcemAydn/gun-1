@@ -19,9 +19,24 @@ const router = createRouter({
         component: () => import('../views/UpdateView.vue')
     },
     {
-        path: '/create',
-        name: 'create',
-        component: () => import('../views/CreateView.vue')
+        path: '/title/create',
+        name: 'createTitle',
+        component: () => import('../views/CreateTitle.vue')
+    },
+    {
+      path: '/members',
+      name: 'members',
+      component: () => import('../views/MembersView.vue')
+    },
+    {
+      path: '/members/create',
+      name: 'createMember',
+      component: () => import('../views/CreateMember.vue')
+    },
+    {
+      path: '/members/update/:id',
+      name: 'UpdateMember',
+      component: () => import('../views/UpdateMember.vue')
     },
   ]
 });
