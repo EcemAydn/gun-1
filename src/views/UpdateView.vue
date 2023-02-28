@@ -1,33 +1,34 @@
 <script setup>
 import inputComp from '@/components/input.vue'
 import buttonComp from '@/components/button.vue'
-import { useLoginStore } from '../stores/login';
+import { useTitleStore } from '../stores/titles';
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
-const userStore = useLoginStore();
+const titleStore = useTitleStore();
 const nameDesc = ref({
     id : '',
     name : '',
     description : ''
 });
+console.log(nameDesc);
 const router = useRouter()
 const route = useRoute()
 
 onMounted(async() => {
-    await userStore.getTitles();
+    await titleStore.getTitles();
     if (route.params.id){
-        nameDesc.value = userStore.getTitleById(route.params.id)
+        nameDesc.value = titleStore.getTitleById(route.params.id)
     } else {
         console.log(route.params);
         console.log('aa');
-        router.push({ name : 'title'})
     }
 })
 
 function updateButton(){
-    userStore.updateTitle(nameDesc.value)
+    titleStore.updateTitle(nameDesc.value)
     console.log(nameDesc.value);
+    router.push({ name : 'title'})
     
 }
 // {name : nameDesc.value.name, description : nameDesc.value.description}

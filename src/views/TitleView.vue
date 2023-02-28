@@ -1,24 +1,24 @@
 <script setup>
 import inputComp from '../components/input.vue';
 import buttonComp from '../components/button.vue';
-import { useLoginStore } from '../stores/login'
+import { useTitleStore } from '../stores/titles'
 import { ref } from 'vue';
 const isLoading = ref(true);
-const userStore = useLoginStore();
+const titleStore = useTitleStore();
 
-userStore.getTitles().finally(() => {
+titleStore.getTitles().finally(() => {
     isLoading.value = false;
 })
 
 function deleteButton(a){
-  userStore.deleteUser(a);
+  titleStore.deleteTitle(a);
 }
 </script>
 <template>
   <div class="flex flex-col items-end overflow-x-auto sm:-mx-6 lg:-mx-8 h-full px-6 pt-4 pb-6">
     <router-link 
           class="bg-green-500 p-1 pl-4 pr-4 rounded-md text-white shadow-inner hover:shadow-none hover:bg-green-600 hover:transition hover:duration-500" 
-          :to="{ name: 'create' }">
+          :to="{ name: 'createTitle' }">
           + Yeni kayıt oluştur
         </router-link>
         <div class="h-full w-full overflow-auto">
@@ -45,7 +45,7 @@ function deleteButton(a){
 
             <tbody class="">
               <tr
-                v-for="title in userStore.titles" 
+                v-for="title in titleStore.titles" 
                 :key="title.id"
                 class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 even:bg-gray-50 last:border-b-0"
               >

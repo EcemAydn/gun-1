@@ -1,11 +1,11 @@
 <script setup>
 import inputComp from '@/components/input.vue';
 import buttonComp from '@/components/button.vue';
-import { useLoginStore } from '../stores/login'
+import { useTitleStore } from '../stores/titles'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const userStore = useLoginStore();
+const titleStore = useTitleStore();
 const title = ref({
     name:null,
     description:null,
@@ -13,9 +13,9 @@ const title = ref({
 const router = useRouter();
 
 function saveButton(){
-    userStore.createTitle({id: new Date().getTime(), name: title.value.name, description: title.value.description});
+    titleStore.createTitle({id: new Date().getTime(), name: title.value.name, description: title.value.description});
     alert('basarili')
-    router.push({ name : 'title'});
+    router.push({ name : 'title'}); 
 }
 
 </script>
