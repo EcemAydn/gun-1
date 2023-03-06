@@ -1,7 +1,7 @@
 <template>
 <button 
     :type="type" 
-    class="bg-purple-400 text-white p-2 rounded-md mt-4">
+    class="bg-purple-400 p-2 rounded-md font-normal">
     {{ buttonName }}</button>
 </template>
 
