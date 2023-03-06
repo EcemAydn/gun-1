@@ -1,8 +1,9 @@
 <script setup>
 import inputComp from '@/components/input.vue';
 import buttonComp from '@/components/button.vue';
-import { useMembersStore } from '../stores/members'
-import { useTitleStore } from '../stores/titles'
+import navbarComp from '../../components/navbar.vue';
+import { useMembersStore } from '../../stores/members'
+import { useTitleStore } from '../../stores/titles'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -24,8 +25,9 @@ function saveButton(){
 </script>
 
 <template>
-   <div class="w-2/3 md:w-1/3">
-    <form action="" @submit.prevent="saveButton()" class="flex flex-col items-center bg-white p-10 rounded-md gap-4">
+  <navbarComp />
+   <div class="w-full h-full flex items-center justify-center">
+    <form action="" @submit.prevent="saveButton()" class="flex flex-col w-2/3 md:w-1/3 items-center bg-white p-10 rounded-md gap-4">
         <h1 class="text-xl">Oluş</h1>
         <div class="w-full flex flex-col gap-2">
             <inputComp v-model="title.name" label="Name" />
