@@ -10,12 +10,15 @@ const members = ref([]);
     return new Promise((resolve, reject) => {
       api.get('/members')
       .then(response => {
-        console.log(response.data);
         members.value = response.data.members
-        resolve('oldu')
+        resolve('Successful')
       })
-      .catch(()=> {
-        reject('olmadi')
+      .catch((error) => {
+        if(error.response){
+          reject(error.response.data.message);
+        } else {
+          reject(error);
+        }
       })
     })
   }
@@ -27,10 +30,9 @@ const members = ref([]);
         name: title.name,
       })
       .then((response) => {
-        console.log(response.data);
-        members.value.push(response.data)
+        members.value.push(response.data);
         
-        resolve('oldu')
+        resolve('Successful')
       })
       .catch((error) => {
         if(error.response){
@@ -47,9 +49,9 @@ const members = ref([]);
       api.delete(`/members/${id}`)
       .then(() => {
         const findIndex = members.value.findIndex(member => member.id === id);
-        members.value.splice(findIndex, 1)
+        members.value.splice(findIndex, 1);
         
-        resolve('oldu')
+        resolve('Successful')
       })
       .catch((error) => {
         if(error.response){
@@ -64,15 +66,15 @@ const members = ref([]);
   function updateMember(member){
     return new Promise((resolve, reject) => {
       api.put(`/members/${member.id}`, {
-        id: member.id,
-        title:member.title.name,
+        id: member.title_id,
+        title_id:member.title.id,
         name: member.name
       })
       .then((response) => {
         const findIndex = members.value.findIndex(item => item.id === member.id);
         members.value.splice(findIndex, 1, response.data.member)
         
-        resolve('oldu')
+        resolve('Successful')
       })
       .catch((error) => {
         if(error.response){

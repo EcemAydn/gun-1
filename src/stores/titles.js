@@ -9,11 +9,15 @@ export const useTitleStore = defineStore('title', () => {
     function getTitles() {
       return new Promise((resolve, reject) => {
         api.get('/titles').then(response => {
-            console.log(response);
             titles.value = response.data.titles;
           resolve()
-        }).catch(() => {
-          reject('olmadi')
+        })
+        .catch((error) => {
+          if(error.response){
+            reject(error.response.data.message);
+          } else {
+            reject(error);
+          }
         })
       })
     }
@@ -29,10 +33,14 @@ export const useTitleStore = defineStore('title', () => {
           const findIndex = titles.value.findIndex((item) => item.id === title.id);
           titles.value.splice(findIndex, 1, response.data.title)
   
-          resolve('oldu');
+          resolve('Successful');
         })
-        .catch(() => {
-          reject('olmadi');
+        .catch((error) => {
+          if(error.response){
+            reject(error.response.data.message);
+          } else {
+            reject(error);
+          }
         })
       })
     }
@@ -45,9 +53,14 @@ export const useTitleStore = defineStore('title', () => {
           .then((response) => {
             console.log(response.data);
             titles.value.push(response.data)
-            resolve('oldu');
-          }).catch(() => {
-            reject('olmadi');
+            resolve('Successful');
+          })
+          .catch((error) => {
+            if(error.response){
+              reject(error.response.data.message);
+            } else {
+              reject(error);
+            }
           })
       })
     }
@@ -59,10 +72,14 @@ export const useTitleStore = defineStore('title', () => {
           const findIndex = titles.value.findIndex((title) => title.id === id);
           titles.value.splice(findIndex, 1);
   
-          resolve('oldu');
+          resolve('Successful');
         })
-        .catch(() => {
-          reject('olmadi');
+        .catch((error) => {
+          if(error.response){
+            reject(error.response.data.message);
+          } else {
+            reject(error);
+          }
         })
       })
     }

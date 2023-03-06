@@ -20,7 +20,7 @@ export const useLoginStore = defineStore('login', () => {
         localStorage.setItem('token', response.data.token);
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
-        resolve('oldu')
+        resolve('Successful')
       })
       .catch((error) => {
         if (error.response) {

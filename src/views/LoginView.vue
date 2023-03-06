@@ -17,12 +17,12 @@ const isLoading= ref(false)
 function signIn() {
   isLoading.value = true
   userStore.addUser({email:userList.value.email, password:userList.value.password})
-  .then((ups)=> {
-    console.log(ups);
+  .then((resolve)=> {
+    console.log(resolve);
     router.push({ name: "title"})
     
-  }).catch((bla)=> {
-    console.log(bla);
+  }).catch((error)=> {
+    console.log(error);
   })
   .finally(()=> {
     isLoading.value = false
@@ -34,8 +34,9 @@ userStore.getUser();
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-center text-sm gap-6 bg-purple-100">
+  <div class="w-full h-full flex flex-col items-center justify-center text-sm gap-6 bg-gray-100">
     <div class="p-8 bg-purple-400 rounded-full border-4 border-purple-300 shadow-md"></div>
+    <i class="fa-solid fa-bars text-2xl text-black"></i>     
 
     <div class="flex flex-col items-center gap-1">
       <h1
@@ -60,7 +61,7 @@ userStore.getUser();
           <a href="#" class="text-blue-600 ">Forgot your password?</a>
         </div>
 
-        <buttonComp type="submit" buttonName="Sign in" />
+        <buttonComp class="text-white" type="submit" buttonName="Sign in" />
 
         <div class="flex items-center justify-center">
             <hr aria-hidden="true" class="w-full">
@@ -70,9 +71,9 @@ userStore.getUser();
             <hr aria-hidden="true" class="w-full" >
         </div>
         <div class="w-full grid grid-cols-3 gap-1">
-          <buttonComp buttonName="fb"/>
-          <buttonComp buttonName="tw" />
-          <buttonComp buttonName="git" />
+          <buttonComp class="text-white" buttonName="fb"/>
+          <buttonComp class="text-white" buttonName="tw" />
+          <buttonComp class="text-white" buttonName="git" />
         </div>
           <!-- <label for="mail">Email adress</label>
           <input id="mail" type="mail" class="border p-1 rounded-md outline-none" required>
