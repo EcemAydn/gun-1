@@ -2,18 +2,27 @@
 import inputComp from '../../components/input.vue';
 import buttonComp from '../../components/button.vue';
 import navbarComp from '../../components/navbar.vue';
-import { useProjectStore } from '../../stores/projects'
+import { useProjectStore } from '../../stores/projects';
+import { useAlertStore } from '@/stores/alert';
 import { ref } from 'vue';
 import moment from 'moment';
+
 const isLoading = ref(true);
 const projectStore = useProjectStore();
+const alertStore = useAlertStore();
 
 projectStore.getProjects().finally(() => {
     isLoading.value = false;
 })
 
 function deleteButton(a){
-  projectStore.deleteProject(a);
+  projectStore.deleteProject(a)
+  .then(() => {
+    alertStore.addAlert({ message: 'Deleted!', color: 'success' });
+  })
+  .catch(() => {
+    alertStore.addAlert({ message: 'Error!', color: 'error' });
+  })
 }
 </script>
 <template>

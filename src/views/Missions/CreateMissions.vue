@@ -5,6 +5,7 @@ import navbarComp from '../../components/navbar.vue';
 import { useMissionsStore } from '../../stores/missions';
 import { useMembersStore } from '../../stores/members';
 import { useProjectStore } from '../../stores/projects';
+import { useAlertStore } from '@/stores/alert';
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import moment from 'moment';
@@ -20,30 +21,13 @@ const memberProject = ref({
     project:'',
     description:'',
     target:'',
-})
-
+});
+const alertStore = useAlertStore();
 
 memberStore.getMembers()
 projectStore.getProjects()
 
-onMounted(async () => {
-  await missionStore.getMissions();
-  await memberStore.getMembers();
-  await projectStore.getProjects();
-  if (route.params.id) {
-    // memberProject.value = {
-    //   ...missionStore.getMissionById(route.params.id),
-    //   title_id: missionStore.getMissionById(route.params.id).title.id,
-    // }
-    // delete memberProject.value.title;
-    memberProject.value = missionStore.getMissionById(route.params.id);
-    memberProject.value.member_id = memberProject.value.member.id;
-    memberProject.value.project = memberProject.value.project.id;
 
-  } else {
-    console.log('test olmadi');
-  }
-})
 
 
 function saveButton(){
@@ -53,9 +37,13 @@ function saveButton(){
         description: memberProject.value.description,
         target_date: moment(memberProject.value.target).format('YYYY-MM-DD HH:mm:ss')
     });
-    alert('basarili');
-    console.log(memberProject.value.project);
-    router.push({ name : 'missions'});    
+    router.push({ name : 'missions'})
+    .then(() => {
+        alertStore.addAlert({ message: 'Created!', color: 'success' });
+    })
+    .catch(() => {
+        alertStore.addAlert({ message: 'Error!', color: 'error' });
+  })
 }
 
 </script>

@@ -3,8 +3,9 @@ import inputComp from '@/components/input.vue'
 import buttonComp from '@/components/button.vue'
 import navbarComp from '../../components/navbar.vue';
 import { useMissionsStore } from '../../stores/missions';
-import { useMembersStore } from '../../stores/members'
-import { useProjectStore } from '../../stores/projects'
+import { useMembersStore } from '../../stores/members';
+import { useProjectStore } from '../../stores/projects';
+import { useAlertStore } from '@/stores/alert';
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import moment from 'moment';
@@ -22,6 +23,7 @@ const memberProject = ref({
   delivery_date: '', 
   status: '', 
 });
+const alertStore = useAlertStore();
 
 
 
@@ -57,7 +59,12 @@ function updateButton() {
         
       });
   router.push({ name: 'missions' })
-
+  .then(() => {
+    alertStore.addAlert({ message: 'Updated!', color: 'success' });
+  })
+  .catch(() => {
+    alertStore.addAlert({ message: 'Error!', color: 'error' });
+  })
 }
 // {name : nameTitle.value.name, description : nameTitle.value.description}
 </script>

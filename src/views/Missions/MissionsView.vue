@@ -2,7 +2,8 @@
 import navbarComp from '../../components/navbar.vue';
 import buttonComp from '../../components/button.vue';
 import { useMissionsStore } from '../../stores/missions'
-import { useProjectStore } from '../../stores/projects'
+import { useProjectStore } from '../../stores/projects';
+import { useAlertStore } from '@/stores/alert';
 import { ref, onMounted } from 'vue';
 import moment from 'moment';
 
@@ -12,9 +13,17 @@ const missionsStore = useMissionsStore();
 missionsStore.getMissions().finally(() => {
     isLoading.value = false;
 })
+const alertStore = useAlertStore();
+
 
 function deleteButton(a){
     missionsStore.deleteMission(a)
+    .then(() => {
+      alertStore.addAlert({ message: 'Deleted!', color: 'success' });
+    })
+    .catch(() => {
+      alertStore.addAlert({ message: 'Error!', color: 'error' });
+    })
 }
 
 </script>

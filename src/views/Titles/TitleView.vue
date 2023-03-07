@@ -2,27 +2,57 @@
 import inputComp from '../../components/input.vue';
 import buttonComp from '../../components/button.vue';
 import navbarComp from '../../components/navbar.vue';
-import popup from '../../components/popup.vue';
+import modalComp from '../../components/modal.vue';
 import { useTitleStore } from '../../stores/titles'
+import { useAlertStore } from '@/stores/alert';
+import { useModalStore } from '@/stores/modal';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const popupActive= ref(false);
+const title = ref({
+    name:null,
+    description:null,
+});
+const router = useRouter();
 const isLoading = ref(true);
 const titleStore = useTitleStore();
+const alertStore = useAlertStore();
+const modalStore = useModalStore();
 
 titleStore.getTitles().finally(() => {
     isLoading.value = false;
 })
 
 function deleteButton(a){
-  titleStore.deleteTitle(a);
+  titleStore.deleteTitle(a)
+  .then(() => {
+    alertStore.addAlert({ message: 'Deleted!', color: 'success' });
+  })
+  .catch(() => {
+    alertStore.addAlert({ message: 'Error!', color: 'error' });
+  })
 }
+
+function saveButton(){
+    titleStore.createTitle({id: new Date().getTime(), name: title.value.name, description: title.value.description})
+    .then(() => {
+    alertStore.addAlert({ message: 'Created!', color: 'success' });
+    })
+    .catch(() => {
+    alertStore.addAlert({ message: 'Error!', color: 'error' });
+    })
+}
+
+
+
+
 </script>
 <template>
+  <!-- <modalComp title="Create Title" @submit.prevent="saveButton()">
+      <inputComp class="mb-4" label="Name"/>
+      <inputComp label="Description"/>
+  </modalComp> -->
   <navbarComp />
-  <popup v-if="popupActive">
-    <h2>Silindi</h2>
-  </popup>
   <div class="px-2 md:px-8 rounded-md mb-16 w-full sm:w-4/5 overflow-hidden h-full ">
     <div v-if="!isLoading" class="flex flex-col items-end overflow-x-auto sm:-mx-6 lg:-mx-8 h-full px-6 pt-4 pb-6 gap-2">
 
@@ -50,7 +80,7 @@ function deleteButton(a){
                 </th>
                 
               </tr>
-            </thead>
+            </thead>  
 
             <tbody>
               <tr
@@ -60,7 +90,6 @@ function deleteButton(a){
               >
                 <td class="text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   {{ title.id }}
-
                 </td>
                 <td class="text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   {{ title.name }}
@@ -70,11 +99,7 @@ function deleteButton(a){
                 </td>
                 
                 <td class=" text-md font-light whitespace-nowrap">
-                    <router-link 
-                      :to = "{ name: 'update', params: { id: title.id} }"
-                      class="font-normal pr-8 bg-transparent text-blue-500"
-                      >Edit
-                    </router-link>
+                    <buttonComp buttonName="Edit" class="font-normal pr-8 bg-transparent text-blue-500" @click=""/>
                     
                     <buttonComp buttonName="Delete" class="bg-transparent p-0 text-red-500" @click="deleteButton(title.id)" />
                     

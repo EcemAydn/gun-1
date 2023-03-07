@@ -4,6 +4,7 @@ import buttonComp from '../components/button.vue';
 import { useLoginStore } from '../stores/login'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAlertStore } from '@/stores/alert';
 
 
 const userStore = useLoginStore();
@@ -12,17 +13,19 @@ const userList = ref({
   email:null,
   password:null
 });
-const isLoading= ref(false)
+const isLoading= ref(false);
+const alertStore = useAlertStore();
+
 
 function signIn() {
   isLoading.value = true
   userStore.addUser({email:userList.value.email, password:userList.value.password})
   .then((resolve)=> {
-    console.log(resolve);
     router.push({ name: "title"})
-    
+    alertStore.addAlert({ message: resolve, color: 'success' });
   }).catch((error)=> {
     console.log(error);
+    alertStore.addAlert({ message: error, color: 'error' });
   })
   .finally(()=> {
     isLoading.value = false

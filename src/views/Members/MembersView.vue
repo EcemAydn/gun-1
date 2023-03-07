@@ -1,18 +1,25 @@
 <script setup>
 import navbarComp from '../../components/navbar.vue';
 import buttonComp from '../../components/button.vue';
-import { useMembersStore } from '../../stores/members'
+import { useMembersStore } from '../../stores/members';
+import { useAlertStore } from '@/stores/alert';
 import { ref } from 'vue';
-
 
 const isLoading = ref(true);
 const membersStore = useMembersStore();
 membersStore.getMembers().finally(() => {
     isLoading.value = false;
-})
+});
+const alertStore = useAlertStore();
 
 function deleteButton(a){
-    membersStore.deleteMember(a)
+  membersStore.deleteMember(a)
+  .then(() => {
+    alertStore.addAlert({ message: 'Deleted!', color: 'success' });
+  })
+  .catch(() => {
+    alertStore.addAlert({ message: 'Error!', color: 'error' });
+  })
 }
 
 </script>
