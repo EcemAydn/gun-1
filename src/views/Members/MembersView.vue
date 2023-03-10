@@ -2,11 +2,13 @@
 import navbarComp from '../../components/navbar.vue';
 import buttonComp from '../../components/button.vue';
 import { useMembersStore } from '../../stores/members';
+import { useModalStore } from '../../stores/modal';
 import { useAlertStore } from '@/stores/alert';
 import { ref } from 'vue';
 
 const isLoading = ref(true);
 const membersStore = useMembersStore();
+const modalStore = useModalStore();
 membersStore.getMembers().finally(() => {
     isLoading.value = false;
 });
@@ -22,17 +24,21 @@ function deleteButton(a){
   })
 }
 
+function createMemberButton(){
+  modalStore.addModal('member');
+}
+
 </script>
 
 <template>
   <navbarComp />
   <div class="px-2 md:px-8 rounded-md mb-16 w-full sm:w-4/5 overflow-hidden h-full ">
   <div  v-if="!isLoading" class="flex flex-col items-end overflow-x-auto sm:-mx-6 lg:-mx-8 h-full px-6 pt-4 pb-6 gap-2">
-    <router-link 
+    <button 
           class="bg-green-500 p-1 pl-4 pr-4 rounded-md text-white shadow-inner hover:shadow-none hover:bg-green-600 hover:transition hover:duration-500" 
-          :to="{ name: 'createMember' }">
+          @click="createMemberButton">
           + Yeni kayıt oluştur
-        </router-link>
+        </button>
         <div class="h-full w-full overflow-auto rounded-xl">
           <table class="min-w-full text-center">
             <thead class="border-b bg-gray-800 sticky top-0 left-0 z-10">

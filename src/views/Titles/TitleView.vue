@@ -7,13 +7,7 @@ import { useTitleStore } from '../../stores/titles'
 import { useAlertStore } from '@/stores/alert';
 import { useModalStore } from '@/stores/modal';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-const title = ref({
-    name:null,
-    description:null,
-});
-const router = useRouter();
 const isLoading = ref(true);
 const titleStore = useTitleStore();
 const alertStore = useAlertStore();
@@ -33,34 +27,21 @@ function deleteButton(a){
   })
 }
 
-function saveButton(){
-    titleStore.createTitle({id: new Date().getTime(), name: title.value.name, description: title.value.description})
-    .then(() => {
-    alertStore.addAlert({ message: 'Created!', color: 'success' });
-    })
-    .catch(() => {
-    alertStore.addAlert({ message: 'Error!', color: 'error' });
-    })
+function creatTitleButton() {
+  modalStore.addModal('title');
 }
-
-
-
 
 </script>
 <template>
-  <!-- <modalComp title="Create Title" @submit.prevent="saveButton()">
-      <inputComp class="mb-4" label="Name"/>
-      <inputComp label="Description"/>
-  </modalComp> -->
   <navbarComp />
   <div class="px-2 md:px-8 rounded-md mb-16 w-full sm:w-4/5 overflow-hidden h-full ">
     <div v-if="!isLoading" class="flex flex-col items-end overflow-x-auto sm:-mx-6 lg:-mx-8 h-full px-6 pt-4 pb-6 gap-2">
 
-      <router-link 
+      <button 
           class="bg-green-500 p-1 pl-4 pr-4 rounded-md text-white shadow-inner hover:shadow-none hover:bg-green-600 hover:transition hover:duration-500" 
-          :to="{ name: 'createTitle' }">
+          @click="creatTitleButton">
           + Yeni kayıt oluştur
-        </router-link>
+        </button>
 
         <div class="h-full w-full overflow-auto rounded-xl">
           <table class="min-w-full text-center">
@@ -99,7 +80,11 @@ function saveButton(){
                 </td>
                 
                 <td class=" text-md font-light whitespace-nowrap">
-                    <buttonComp buttonName="Edit" class="font-normal pr-8 bg-transparent text-blue-500" @click=""/>
+                    <router-link 
+                      :to = "{ name: 'update', params: { id: title.id} }"
+                      class="font-normal pr-8 bg-transparent text-blue-500"
+                      >Edit
+                    </router-link>
                     
                     <buttonComp buttonName="Delete" class="bg-transparent p-0 text-red-500" @click="deleteButton(title.id)" />
                     
