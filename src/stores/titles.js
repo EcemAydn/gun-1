@@ -51,8 +51,8 @@ export const useTitleStore = defineStore('title', () => {
           name: uv.name, description: uv.description
         })
           .then((response) => {
-            console.log(response.data);
-            titles.value.push(response.data)
+            console.log(response.data.title);
+            titles.value.push(response.data.title)
             resolve('Successful');
           })
           .catch((error) => {

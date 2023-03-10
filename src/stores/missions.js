@@ -36,7 +36,7 @@ const missions = ref([]);
       })
       .then((response) => {
         console.log(response.data);
-        missions.value.push(response.data);
+        missions.value.push(response.data.mission);
         
         resolve('Successful')
       })

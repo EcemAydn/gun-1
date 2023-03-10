@@ -55,7 +55,7 @@ export const useProjectStore = defineStore('project', () => {
         })
           .then((response) => {
             console.log(response.data);
-            projects.value.push(response.data)
+            projects.value.push(response.data.project)
             resolve('Successful');
           })
           .catch((error) => {

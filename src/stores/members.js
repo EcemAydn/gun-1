@@ -30,7 +30,7 @@ const members = ref([]);
         name: title.name,
       })
       .then((response) => {
-        members.value.push(response.data);
+        members.value.push(response.data.member);
         
         resolve('Successful')
       })
