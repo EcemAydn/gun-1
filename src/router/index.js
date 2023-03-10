@@ -19,19 +19,9 @@ const router = createRouter({
         component: () => import('../views/Titles/UpdateView.vue')
     },
     {
-        path: '/title/create',
-        name: 'createTitle',
-        component: () => import('../views/Titles/CreateTitle.vue')
-    },
-    {
       path: '/members',
       name: 'members',
       component: () => import('../views/Members/MembersView.vue')
-    },
-    {
-      path: '/members/create',
-      name: 'createMember',
-      component: () => import('../views/Members/CreateMember.vue')
     },
     {
       path: '/members/update/:id',
@@ -44,11 +34,6 @@ const router = createRouter({
       component: () => import('../views/Projects/ProjectView.vue')
     },
     {
-      path: '/projects/create',
-      name: 'CreateProject',
-      component: () => import('../views/Projects/CreateProject.vue')
-    },
-    {
       path: '/projects/update/:id',
       name: 'UpdateProject',
       component: () => import('../views/Projects/UpdateProject.vue')
@@ -59,11 +44,6 @@ const router = createRouter({
       component: () => import('../views/Missions/MissionsView.vue')
     },
     {
-      path: '/missions/create',
-      name: 'CreateMission',
-      component: () => import('../views/Missions/CreateMissions.vue')
-    },
-    {
       path: '/missions/update/:id',
       name: 'UpdateMission',
       component: () => import('../views/Missions/UpdateMissions.vue')
@@ -71,13 +51,13 @@ const router = createRouter({
   ]
 });
 
-// const token = localStorage.getItem('token');
-// router.beforeEach((to, from, next) => {
-//    if(!token && to.name !== 'login') {
-//     next({ name: 'login' });
-//    }
-
-//    next();
-// })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  if(!token && to.name !== 'login') {
+      next({ name: 'Login' });
+  } else {
+    next();
+  }
+})
 
 export default router
