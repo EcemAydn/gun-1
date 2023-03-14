@@ -2,7 +2,6 @@
 import inputComp from '../../components/input.vue';
 import buttonComp from '../../components/button.vue';
 import navbarComp from '../../components/navbar.vue';
-import modalComp from '../../components/modal.vue';
 import { useTitleStore } from '../../stores/titles'
 import { useAlertStore } from '@/stores/alert';
 import { useModalStore } from '@/stores/modal';
@@ -28,7 +27,11 @@ function deleteButton(a){
 }
 
 function creatTitleButton() {
-  modalStore.addModal('title');
+  modalStore.addModal({ type: 'title'});
+}
+
+function updateTitleButton(item){
+  modalStore.addModal({ type: 'title', item: { ...item } })
 }
 
 </script>
@@ -68,7 +71,7 @@ function creatTitleButton() {
                 v-for="title in titleStore.titles" 
                 :key="title.id"
                 class="text-xs bg-white border-b opacity-70 transition duration-300 ease-in-out hover:opacity-100 hover:bg-gray-100 even:bg-gray-100 last:border-b-0"
-              >
+                >
                 <td class="text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   {{ title.id }}
                 </td>
@@ -80,11 +83,11 @@ function creatTitleButton() {
                 </td>
                 
                 <td class=" text-md font-light whitespace-nowrap">
-                    <router-link 
-                      :to = "{ name: 'update', params: { id: title.id} }"
+                    <button 
+                      @click = "updateTitleButton(title)"
                       class="font-normal pr-8 bg-transparent text-blue-500"
                       >Edit
-                    </router-link>
+                    </button>
                     
                     <buttonComp buttonName="Delete" class="bg-transparent p-0 text-red-500" @click="deleteButton(title.id)" />
                     

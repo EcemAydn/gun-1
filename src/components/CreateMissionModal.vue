@@ -24,32 +24,65 @@ const memberProject = ref({
 });
 const alertStore = useAlertStore();
 const modalStore = useModalStore();
+const props = defineProps({
+    item: {
+        type: Object
+    }
+})
+
+onMounted(() => {
+    if(props.item){
+        memberProject.value = {
+            ...props.item,
+            member: props.item.member.id,
+        }
+    }
+})
 
 memberStore.getMembers()
 projectStore.getProjects()
 
 function saveButton(){
-    missionStore.createMission({
-        member:memberProject.value.member,
+    if(props.item){
+        missionStore.updateMission({
+        id:  memberProject.value.id,
         project_id: memberProject.value.project,
+        member_id: memberProject.value.member,
         description: memberProject.value.description,
-        target_date: moment(memberProject.value.target).format('YYYY-MM-DD HH:mm:ss')
-    })
-    .then(() => {
-        modalStore.closeModal();
-        alertStore.addAlert({ message: 'Created!', color: 'success' });
-    })
-    .catch(() => {
-        alertStore.addAlert({ message: 'Error!', color: 'error' });
-  })
+        delivery_date: moment(memberProject.value.delivery_date).format('YYYY-MM-DD HH:mm:ss') ,
+        target_date: moment(memberProject.value.target_date).format('YYYY-MM-DD HH:mm:ss') ,
+        status: memberProject.value.status,
+      })
+      .then(() => {
+            modalStore.closeModal();
+            alertStore.addAlert({ message: 'Created!', color: 'success' });
+        })
+        .catch(() => {
+            alertStore.addAlert({ message: 'Error!', color: 'error' });
+        })
+    } else{
+        missionStore.createMission({
+            member:memberProject.value.member,
+            project_id: memberProject.value.project,
+            description: memberProject.value.description,
+            target_date: moment(memberProject.value.target).format('YYYY-MM-DD HH:mm:ss')
+        })
+        .then(() => {
+            modalStore.closeModal();
+            alertStore.addAlert({ message: 'Created!', color: 'success' });
+        })
+        .catch(() => {
+            alertStore.addAlert({ message: 'Error!', color: 'error' });
+        })
+    }
 }
 
 function createMemberButton(){
-    modalStore.addModal('member');
+    modalStore.addModal({type : 'member'});
 }
 
 function createProjectButton(){
-    modalStore.addModal('project');
+    modalStore.addModal({type : 'project'});
 }
 
 function closeModalButton(){
@@ -59,7 +92,7 @@ function closeModalButton(){
 </script>
 <template>
     <form @submit.prevent="saveButton()" class="flex flex-col items-center p-10 gap-4">
-        <h1 class="text-xl">Create Mission</h1>
+        <h1 class="text-xl">{{ item ? 'Update' : 'Create' }} Mission</h1>
         <div class="w-full flex flex-col gap-2">
             <inputComp v-model="memberProject.description" label="Description" />
         </div>

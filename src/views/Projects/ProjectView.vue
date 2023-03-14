@@ -17,8 +17,8 @@ projectStore.getProjects().finally(() => {
     isLoading.value = false;
 })
 
-function deleteButton(a){
-  projectStore.deleteProject(a)
+function deleteButton(id){
+  projectStore.deleteProject(id)
   .then(() => {
     alertStore.addAlert({ message: 'Deleted!', color: 'success' });
   })
@@ -28,7 +28,11 @@ function deleteButton(a){
 }
 
 function CreateProjectButton(){
-  modalStore.addModal('project')
+  modalStore.addModal({type: 'project'})
+}
+
+function updateProjectButton(item){
+  modalStore.addModal({type : 'project', item : { ...item }})
 }
 
 </script>
@@ -89,11 +93,11 @@ function CreateProjectButton(){
                   {{ moment(project.updated_at).format('YYYY/DD/MM HH:mm') }}
                 </td>
                 <td class="text-md font-light whitespace-nowrap">
-                  <router-link 
-                    :to = "{ name: 'UpdateProject', params: { id: project.id} }"
+                  <button 
+                    @click = "updateProjectButton(project)"
                     class="font-normal pr-8 bg-transparent text-blue-500"
                     >Edit
-                  </router-link>
+                  </button>
                   <buttonComp buttonName="Delete" class=" bg-transparent text-red-500" @click="deleteButton(project.id)" />
                 </td>
               </tr>

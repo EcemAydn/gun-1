@@ -4,12 +4,11 @@ import buttonComp from '../components/button.vue';
 import { useMembersStore } from '../stores/members'
 import { useTitleStore } from '../stores/titles';
 import { useAlertStore } from '../stores/alert';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useModalStore } from '../stores/modal';
 
 const memberStore = useMembersStore();
-const router = useRouter();
 const titleStore = useTitleStore()
 const title = ref({
     titleId:'',
@@ -17,22 +16,44 @@ const title = ref({
 });
 const alertStore = useAlertStore();
 const modalStore = useModalStore();
+const props = defineProps({
+    item: {
+        type: Object,
+    }
+})
+
+onMounted(() => {
+    if(props.item) {
+        title.value = props.item
+    }
+})
 
 titleStore.getTitles()
 
 function saveButton(){
-    memberStore.createMember({id: title.value.titleId, name: title.value.name})
-    .then(() => {
-        modalStore.closeModal();
-        alertStore.addAlert({ message: 'Created!', color: 'success' });
-    })
-    .catch(() => {
-        alertStore.addAlert({ message: 'Error!', color: 'error' });
-    })    
+    if( props.item ) {
+        memberStore.updateMember(title.value)
+        .then(() => {
+            modalStore.closeModal();
+            alertStore.addAlert({ message: 'Created!', color: 'success' });
+        })
+        .catch(() => {
+            alertStore.addAlert({ message: 'Error!', color: 'error' });
+        })    
+    } else{
+        memberStore.createMember({id: title.value.titleId, name: title.value.name})
+        .then(() => {
+            modalStore.closeModal();
+            alertStore.addAlert({ message: 'Created!', color: 'success' });
+        })
+        .catch(() => {
+            alertStore.addAlert({ message: 'Error!', color: 'error' });
+        })    
+    }
 }
 
 function createTitleButton(){
-    modalStore.addModal('title');
+    modalStore.addModal({type: 'title'});
 }
 
 function closeModalButton(){
@@ -42,8 +63,8 @@ function closeModalButton(){
 </script>
 <template>
 
-    <form @submit.prevent="saveButton()" class="flex flex-col items-center p-10 gap-4">
-        <h1 class="text-xl">Create Member</h1>
+    <form @submit.prevent="saveButton" class="flex flex-col items-center p-10 gap-4">
+        <h1 class="text-xl">{{ item ? 'Update' : 'Create' }} Member</h1>
         <div class="w-full flex flex-col gap-2">
             <inputComp v-model="title.name" label="Name" />
         </div>

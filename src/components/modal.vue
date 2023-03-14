@@ -21,7 +21,6 @@ function closeModalButton() {
     <div @click.stop class="w-2/3 md:w-1/3 flex flex-col items-center bg-white rounded-md">
       <button class="w-full text-right font-bold bg-white p-1 px-3 rounded-full" @click="closeModalButton">x</button>
       <slot>
-
       </slot>
 
     </div>

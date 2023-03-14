@@ -14,8 +14,8 @@ membersStore.getMembers().finally(() => {
 });
 const alertStore = useAlertStore();
 
-function deleteButton(a){
-  membersStore.deleteMember(a)
+function deleteButton(id){
+  membersStore.deleteMember(id)
   .then(() => {
     alertStore.addAlert({ message: 'Deleted!', color: 'success' });
   })
@@ -25,7 +25,11 @@ function deleteButton(a){
 }
 
 function createMemberButton(){
-  modalStore.addModal('member');
+  modalStore.addModal({ type: 'member'});
+}
+
+function updateMemberButton(item){
+  modalStore.addModal({ type:'member', item: { ...item } });
 }
 
 </script>
@@ -69,11 +73,11 @@ function createMemberButton(){
                   {{ member.name }}
                 </td>
                 <td class="text-md font-light whitespace-nowrap">
-                    <router-link 
-                      :to = "{ name: 'UpdateMember', params: { id: member.id} }"
+                    <button 
+                      @click="updateMemberButton(member)"
                       class="font-normal pr-8 bg-transparent text-blue-500"
                       >Edit
-                    </router-link>
+                    </button>
                   <buttonComp buttonName="Delete" class="bg-transparent text-red-500" @click="deleteButton(member.id)" />
                 </td>
               </tr>

@@ -41,7 +41,7 @@ function getComponent(type) {
     <div class="top-5 right-5 absolute z-50 w-1/3 flex flex-col gap-2">
       <notificationComp v-for="alert in alertStore.alerts" :message="alert.message" :color="alert.color" />
       <modalComp v-for="(modal, index) in modalStore.modals" :key="index + 123123213">
-        <component :is="getComponent(modal)"></component>
+        <component :is="getComponent(modal.type)" :item="modal.item"></component>
       </modalComp>
     </div>
 

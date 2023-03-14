@@ -28,7 +28,11 @@ function deleteButton(a){
 }
 
 function CreateMissionButton(){
-  modalStore.addModal('mission');
+  modalStore.addModal({type: 'mission'});
+}
+
+function updateMissionButton(item){
+  modalStore.addModal({ type: 'mission', item: { ...item }})
 }
 
 </script>
@@ -97,11 +101,11 @@ function CreateMissionButton(){
                   {{ moment(mission.target_date).format('YYYY-MM-DD HH:mm:ss') }}
                 </td>
                 <td class="text-md font-light whitespace-nowrap">
-                    <router-link 
-                      :to = "{ name: 'UpdateMission', params: { id: mission.id} }"
+                    <button 
+                      @click = "updateMissionButton(mission)"
                       class="font-normal pr-8 bg-transparent text-blue-500"
                       >Edit
-                    </router-link>
+                    </button>
                   <buttonComp buttonName="Delete" class="bg-transparent text-red-500" @click="deleteButton(mission.id)" />
                 </td>
               </tr>

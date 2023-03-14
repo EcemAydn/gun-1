@@ -4,8 +4,7 @@ import buttonComp from './button.vue';
 import { useProjectStore } from '../stores/projects';
 import { useAlertStore } from '../stores/alert';
 import { useModalStore } from '../stores/modal';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
 
 const projectStore = useProjectStore();
 const project = ref({
@@ -15,19 +14,41 @@ const project = ref({
     created: '',
     updated: ''
 });
-const router = useRouter();
 const alertStore = useAlertStore();
 const modalStore = useModalStore();
+const props = defineProps({
+    item: {
+        type: Object,
+    }
+})
+
+onMounted(() => {
+    if(props.item){
+        project.value = props.item;
+    }
+})
 
 function saveButton(){
-    projectStore.createProject({name: project.value.name, description: project.value.description})
+    if(props.item){
+    projectStore.updateProject(project.value)
     .then(() => {
-    modalStore.closeModal();
-    alertStore.addAlert({ message: 'Created!', color: 'success' });
+        modalStore.closeModal();
+        alertStore.addAlert({ message: 'Created!', color: 'success' });
     })
     .catch(() => {
     alertStore.addAlert({ message: 'Error!', color: 'error' });
     })
+    }
+    else{
+        projectStore.createProject({name: project.value.name, description: project.value.description})
+        .then(() => {
+            modalStore.closeModal();
+            alertStore.addAlert({ message: 'Created!', color: 'success' });
+        })
+        .catch(() => {
+            alertStore.addAlert({ message: 'Error!', color: 'error' });
+        })
+    }
 }
 
 function closeProjectModal(){
@@ -36,8 +57,8 @@ function closeProjectModal(){
 
 </script>
 <template>
-    <form @submit.prevent="saveButton()" class="flex flex-col items-center p-10 gap-4">
-        <h1 class="text-xl">Create Project</h1>
+    <form @submit.prevent="saveButton" class="flex flex-col items-center p-10 gap-4">
+        <h1 class="text-xl"> {{ item ? 'Update' : 'Create' }} Project</h1>
         <div class="w-full flex flex-col gap-2">
             <inputComp v-model="project.name" label="Name" />
             <inputComp v-model="project.description" label="Description" />

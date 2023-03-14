@@ -45,7 +45,7 @@ function updateButton(){
 <template>
   <navbarComp />
   <div class="h-full w-full flex items-center justify-center">
-        <form action="" @submit.prevent="updateButton" class="w-2/3 md:w-1/3 flex flex-col items-center bg-white rounded-md p-10 gap-8">
+        <form @submit.prevent="updateButton" class="w-2/3 md:w-1/3 flex flex-col items-center bg-white rounded-md p-10 gap-8">
             <h1 class="text-xl">Update Title</h1>
             <div class="w-full flex flex-col gap-2">
                 <inputComp 
